@@ -1,3 +1,10 @@
+#### Orange Traffic
+
+# Le feu tricolore est maintenu par défaut au orange.En cas d’approche d’un usager, le feu devient rouge si l’automobiliste dépasse la vitesse autorisée, et le feu passe au vert si le véhicule est détecté en dessous de la vitesse limite autorisée.
+
+
+# Importation de toutes les fonctions de Tkinter et du module time
+
 import time
 from time import sleep
 from tkinter import *
@@ -21,14 +28,14 @@ def red_black(a):
         time.sleep(0.5)
 
 
-def yellow_light(a):
+def orange_light(a):
     for i in range(a):
-        amber=can_widgt.create_oval(320,200,420,300, fill="yellow")
+        amber=can_widgt.create_oval(320,200,420,300, fill="orange")
         tk.update()
         time.sleep(1)
 
 
-def yellow_black(a):
+def orange_black(a):
     for i in range(a):
         amber=can_widgt.create_oval(320,200,420,300, fill="black")
         tk.update()
@@ -50,48 +57,58 @@ def green_black(a):
 
 
 def light_blink():
+
     red=can_widgt.create_oval(320,70,420,170, fill="black")
     green=can_widgt.create_oval(320,330,420,430, fill="black")
-    amber=can_widgt.create_oval(320,200,420,300, fill ="black")
+    orange=can_widgt.create_oval(320,200,420,300, fill ="orange")
+
+vitesse=0
+
+
+def v_vehicle():
+
+    btn2['state'] = DISABLED
+
+    global vitesse
+
+    vitesse=int(input("Vitesse du véhicule (km/h): ")) # On détecte la vitesse du véhicule
+
+    orange_black(1)
+
+    if vitesse >vitesse_max: # Le véhicule est en excès de vitesse
+
+        red_light(20)
+        red_black(1)
+
+    else :
+
+        green_light(20)
+        green_black(1)
+
+    orange_light(1)
+
+    btn2['state'] = NORMAL
+
 
 
 
 tk=Tk()
-t_end = time.time() + 5 * 60 # On réalise l'expérience sur 5 min
+
 vitesse_max=80 # La vitesse maximale autorisée est 80 km/h
-can_widgt=Canvas(tk, width=750, height=1000)
-can_widgt.pack()
+
+can_widgt=Canvas(tk, width=750, height=500)
+
 can_widgt.create_rectangle(300,50,440,450, fill='grey', outline='black')
 can_widgt.create_rectangle(365,450,375,800, fill='grey', outline='black')
 
+can_widgt.pack(side=LEFT)
+
+btn1=Button(tk,text='Quitter',command=tk.destroy).pack(side=BOTTOM)
+
+btn2=Button(tk,text='Véhicule',command=v_vehicle)
+btn2.pack(side=BOTTOM)
+
 
 light_blink()
-
-
-# Le feu tricolore est maintenu par défaut au orange.
-
-# En cas d’approche d’un usager, le feu devient rouge si l’automobiliste dépasse la vitesse autorisée, et le feu passe au vert si le véhicule est détecté en dessous de la vitesse limite autorisée.
-
-
-while time.time() < t_end:
-
-    yellow_light(1)
-
-    vitesse=int(input("Vitesse du véhicule (km/h): ")) # On détecte la vitesse du véhicule
-
-    if vitesse>vitesse_max: # Le véhicule est en excès de vitesse
-
-        yellow_black(1)
-        red_light(20)
-        red_black(1)
-
-
-    else: # Le véhicule n'est pas en excès de vitesse
-
-        yellow_black(1)
-        green_light(35)
-        green_black(1)
-
-
 
 tk.mainloop()
